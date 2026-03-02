@@ -1,0 +1,40 @@
+# Build artifacts
+*.log
+/tmp/
+*.tmp
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Go
+*.exe
+*.test
+*.out
+vendor/
+
+# Build logs
+/tmp/build-*.log
