@@ -1,0 +1,93 @@
+name: retail-store-build
+
+# ==================================================================
+# Docker Compose Build Configuration for Retail Store v1.0.0
+# ==================================================================
+#
+# Usage:
+#   1. Set environment variables:
+#      export DOCKER_USER="gerheinz"
+#      export VERSION="1.3.0-custom"
+#
+#   2. Build all images:
+#      docker compose -f docker-compose.build.yaml build
+#
+#   3. Build specific service:
+#      docker compose -f docker-compose.build.yaml build ui
+#
+#   4. Build without cache:
+#      docker compose -f docker-compose.build.yaml build --no-cache
+#
+#   5. Build in parallel (faster):
+#      docker compose -f docker-compose.build.yaml build --parallel
+#
+# ==================================================================
+
+services:
+  # ============================================
+  # UI Service (Java Spring Boot)
+  # ============================================
+  ui:
+    build:
+      context: ./src/ui
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: ${DOCKER_USER:-gheinz}/retail-store-ui:${VERSION:-1.3.0-custom}
+    container_name: retail-ui-build
+
+  # ============================================
+  # Catalog Service (Go)
+  # ============================================
+  catalog:
+    build:
+      context: ./src/catalog
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: ${DOCKER_USER:-gheinz}/retail-store-catalog:${VERSION:-1.3.0-custom}
+    container_name: retail-catalog-build
+
+  # ============================================
+  # Cart Service (Java Spring Boot)
+  # ============================================
+  cart:
+    build:
+      context: ./src/cart
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: ${DOCKER_USER:-gheinz}/retail-store-cart:${VERSION:-1.3.0-custom}
+    container_name: retail-cart-build
+
+  # ============================================
+  # Checkout Service (Node.js NestJS)
+  # ============================================
+  checkout:
+    build:
+      context: ./src/checkout
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: ${DOCKER_USER:-gheinz}/retail-store-checkout:${VERSION:-1.3.0-custom}
+    container_name: retail-checkout-build
+
+  # ============================================
+  # Orders Service (Java Spring Boot)
+  # ============================================
+  orders:
+    build:
+      context: ./src/orders
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    image: ${DOCKER_USER:-gerheinz}/retail-store-orders:${VERSION:-1.3.0-custom}
+    container_name: retail-orders-build
+
+# ==================================================================
+# Notes:
+# - This file is for BUILDING images only
+# - To RUN the application, use the original docker-compose.yaml
+# - Images will be tagged with your Docker Hub username
+# - BuildKit cache is enabled for faster subsequent builds
+# ==================================================================

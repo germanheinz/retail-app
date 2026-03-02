@@ -1,7 +1,7 @@
-name: retail-app
+name: retail-store
 networks:
   default:
-    name: retail-app
+    name: retail-store
 services:
   cart:
     cap_add:
