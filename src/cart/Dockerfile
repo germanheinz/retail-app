@@ -1,5 +1,5 @@
 # Build Stage
-FROM public.ecr.aws/amazonlinux/amazonlinux:2023 as build-env
+FROM public.ecr.aws/amazonlinux/amazonlinux:2023 AS build-env
 
 # We tell DNF not to install Recommends and Suggests packages, keeping our
 # installed set of packages as minimal as possible.
@@ -21,7 +21,11 @@ COPY .mvn .mvn
 COPY mvnw .
 COPY pom.xml .
 
+<<<<<<< HEAD
 RUN ./mvnw dependency:go-offline -B -q
+=======
+RUN for attempt in 1 2 3; do mvn dependency:go-offline -B -q && break || { [ "$attempt" -lt 3 ] && echo "Retry $attempt..." && sleep 10; }; done
+>>>>>>> 126f3d9 (fix: add retry logic and fix FROM casing in cart and orders Dockerfiles)
 
 COPY ./src ./src
 
