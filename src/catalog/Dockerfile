@@ -14,7 +14,7 @@ RUN mkdir -p "${GOPATH}/src" "${GOPATH}/bin" /appsrc
 
 WORKDIR /appsrc
 
-ENV GOPROXY=https://goproxy.io,direct
+ENV GOPROXY=https://proxy.golang.org,direct
 
 COPY go.mod go.sum ./
 RUN for attempt in 1 2 3; do go mod download && break || { [ "$attempt" -lt 3 ] && echo "Retry $attempt..." && sleep 10; }; done

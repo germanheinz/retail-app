@@ -19,11 +19,7 @@ COPY .mvn .mvn
 COPY mvnw .
 COPY pom.xml .
 
-<<<<<<< HEAD
-RUN ./mvnw dependency:go-offline -B -q
-=======
 RUN for attempt in 1 2 3; do mvn dependency:go-offline -B -q && break || { [ "$attempt" -lt 3 ] && echo "Retry $attempt..." && sleep 10; }; done
->>>>>>> 6666403 (fix: add retry logic to ui and catalog Dockerfiles for arm64 builds)
 
 COPY ./src ./src
 
