@@ -54,6 +54,16 @@ aws --version   # optional
 | `checkout` | Node.js NestJS | 8080 | Checkout flow API + Redis |
 | `orders` | Java Spring Boot | 8080 | Order management API + PostgreSQL + RabbitMQ |
 
+## Public Images (ECR Public)
+
+| Service | Image URI |
+|---------|-----------|
+| `ui` | `public.ecr.aws/i5b4r2o0/retail-store-ui:1.0.0` |
+| `catalog` | `public.ecr.aws/i5b4r2o0/retail-store-catalog:1.0.0` |
+| `cart` | `public.ecr.aws/i5b4r2o0/retail-store-cart:1.0.0` |
+| `checkout` | `public.ecr.aws/i5b4r2o0/retail-store-checkout:1.0.0` |
+| `orders` | `public.ecr.aws/i5b4r2o0/retail-store-orders:1.0.0` |
+
 ---
 
 ## Quick Start
@@ -61,7 +71,7 @@ aws --version   # optional
 **Step 1 — Pull the images from ECR Public:**
 
 ```bash
-GALLERY="public.ecr.aws/<ALIAS>"
+GALLERY="public.ecr.aws/xxxxxxxx"   # replace with your registryUri
 VERSION="1.0.0"
 
 docker pull $GALLERY/retail-store-ui:$VERSION

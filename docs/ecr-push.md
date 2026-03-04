@@ -26,14 +26,14 @@ aws sts get-caller-identity
 
 ---
 
-## Step 2 — Get your ECR Public alias
+## Step 2 — Get your ECR Public registry URI
 
 ```bash
 aws ecr-public describe-registries --region us-east-1 \
-  --query "registries[0].aliases[0].name" --output text
+  --query "registries[0].registryUri" --output text
 ```
 
-You will get something like `xxxxxxxx`. Use this as your `<ALIAS>` in the steps below.
+You will get something like `public.ecr.aws/xxxxxxxx`. Use this as your `GALLERY` value in the steps below.
 
 ---
 
@@ -63,15 +63,16 @@ done
 ## Step 5 — Tag images for ECR Public
 
 ```bash
-GALLERY="public.ecr.aws/<ALIAS>"
+GALLERY=$(aws ecr-public describe-registries --region us-east-1 \
+  --query "registries[0].registryUri" --output text)
 VERSION="1.0.0"
 DOCKER_USER="gheinz"
 
-docker tag $DOCKER_USER/retail-store-ui:$VERSION        $GALLERY/retail-store-ui:$VERSION
-docker tag $DOCKER_USER/retail-store-catalog:$VERSION   $GALLERY/retail-store-catalog:$VERSION
-docker tag $DOCKER_USER/retail-store-cart:$VERSION      $GALLERY/retail-store-cart:$VERSION
-docker tag $DOCKER_USER/retail-store-checkout:$VERSION  $GALLERY/retail-store-checkout:$VERSION
-docker tag $DOCKER_USER/retail-store-orders:$VERSION    $GALLERY/retail-store-orders:$VERSION
+docker tag $DOCKER_USER/retail-ui-multiarch:$VERSION        $GALLERY/retail-store-ui:$VERSION
+docker tag $DOCKER_USER/retail-catalog-multiarch:$VERSION   $GALLERY/retail-store-catalog:$VERSION
+docker tag $DOCKER_USER/retail-cart-multiarch:$VERSION      $GALLERY/retail-store-cart:$VERSION
+docker tag $DOCKER_USER/retail-checkout-multiarch:$VERSION  $GALLERY/retail-store-checkout:$VERSION
+docker tag $DOCKER_USER/retail-orders-multiarch:$VERSION    $GALLERY/retail-store-orders:$VERSION
 ```
 
 Verify tags:
@@ -94,7 +95,23 @@ docker push $GALLERY/retail-store-orders:$VERSION
 
 ---
 
-## Step 7 — Verify
+## Step 7 — Get the final image URIs
+
+Once pushed, your image URIs will look like:
+
+```
+public.ecr.aws/xxxxxxxx/retail-store-ui:1.0.0
+public.ecr.aws/xxxxxxxx/retail-store-catalog:1.0.0
+public.ecr.aws/xxxxxxxx/retail-store-cart:1.0.0
+public.ecr.aws/xxxxxxxx/retail-store-checkout:1.0.0
+public.ecr.aws/xxxxxxxx/retail-store-orders:1.0.0
+```
+
+Update `docker-compose.yaml` replacing each `image:` value with the corresponding URI above.
+
+---
+
+## Step 8 — Verify
 
 ```bash
 aws ecr-public describe-images \
