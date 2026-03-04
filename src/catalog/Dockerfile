@@ -17,7 +17,7 @@ WORKDIR /appsrc
 ENV GOPROXY=https://goproxy.io,direct
 
 COPY go.mod go.sum ./
-RUN go mod download
+RUN for attempt in 1 2 3; do go mod download && break || { [ "$attempt" -lt 3 ] && echo "Retry $attempt..." && sleep 10; }; done
 
 COPY . .
 
