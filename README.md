@@ -58,26 +58,20 @@ aws --version   # optional
 
 ## Quick Start
 
-**Step 1 — Authenticate Docker with ECR:**
+**Step 1 — Pull the images from ECR Public:**
 
 ```bash
-aws ecr get-login-password --region us-east-1 \
-  | docker login --username AWS --password-stdin \
-    <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
-```
-
-**Step 2 — Pull the images:**
-
-```bash
-ECR="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com"
+GALLERY="public.ecr.aws/<ALIAS>"
 VERSION="1.0.0"
 
-docker pull $ECR/retail-store-ui:$VERSION
-docker pull $ECR/retail-store-catalog:$VERSION
-docker pull $ECR/retail-store-cart:$VERSION
-docker pull $ECR/retail-store-checkout:$VERSION
-docker pull $ECR/retail-store-orders:$VERSION
+docker pull $GALLERY/retail-store-ui:$VERSION
+docker pull $GALLERY/retail-store-catalog:$VERSION
+docker pull $GALLERY/retail-store-cart:$VERSION
+docker pull $GALLERY/retail-store-checkout:$VERSION
+docker pull $GALLERY/retail-store-orders:$VERSION
 ```
+
+> No login required — images are public. Replace `<ALIAS>` with the ECR Public alias.
 
 **Step 3 — Run the stack:**
 
