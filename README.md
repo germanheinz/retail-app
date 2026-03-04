@@ -61,7 +61,7 @@ aws --version   # optional
 **Step 1 — Pull the images from ECR Public:**
 
 ```bash
-GALLERY="public.ecr.aws/<ALIAS>"
+GALLERY="public.ecr.aws/xxxxxxxx"   # replace with your registryUri
 VERSION="1.0.0"
 
 docker pull $GALLERY/retail-store-ui:$VERSION
