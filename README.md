@@ -58,9 +58,28 @@ aws --version   # optional
 
 ## Quick Start
 
-### Option A — Run with pre-built images (no build required)
+**Step 1 — Authenticate Docker with ECR:**
 
-Pull images directly from Amazon ECR Public and start the stack:
+```bash
+aws ecr get-login-password --region us-east-1 \
+  | docker login --username AWS --password-stdin \
+    <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com
+```
+
+**Step 2 — Pull the images:**
+
+```bash
+ECR="<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com"
+VERSION="1.0.0"
+
+docker pull $ECR/retail-store-ui:$VERSION
+docker pull $ECR/retail-store-catalog:$VERSION
+docker pull $ECR/retail-store-cart:$VERSION
+docker pull $ECR/retail-store-checkout:$VERSION
+docker pull $ECR/retail-store-orders:$VERSION
+```
+
+**Step 3 — Run the stack:**
 
 ```bash
 DB_PASSWORD='yourpassword' docker compose up
@@ -76,69 +95,13 @@ docker compose down
 
 ---
 
-### Option B — Build your own images
-
-**Step 1 — Set your Docker Hub username and target version:**
-
-```bash
-export DOCKER_USER="your_dockerhub_username"
-export VERSION="1.3.0-custom"
-```
-
-**Step 2 — Build all images:**
-
-```bash
-docker compose -f docker-compose.build.yaml build
-```
-
-Build a single service:
-
-```bash
-docker compose -f docker-compose.build.yaml build ui
-```
-
-Build without cache:
-
-```bash
-docker compose -f docker-compose.build.yaml build --no-cache
-```
-
-> First build takes 30–60 minutes. Subsequent builds use layer cache and are significantly faster.
-
-**Step 3 — Push to Docker Hub:**
-
-```bash
-docker login
-docker compose -f docker-compose.build.yaml push
-```
-
-**Step 4 — Update `docker-compose.yaml` to use your images:**
-
-Replace the `image:` values in `docker-compose.yaml`:
-
-```yaml
-# Before
-image: public.ecr.aws/aws-containers/retail-store-sample-ui:1.3.0
-
-# After
-image: your_dockerhub_username/retail-store-ui:1.3.0-custom
-```
-
-**Step 5 — Run with your custom images:**
-
-```bash
-DB_PASSWORD='yourpassword' docker compose up
-```
-
----
-
 ## Environment Variables
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `DB_PASSWORD` | Yes | Shared password for MySQL, PostgreSQL, and RabbitMQ |
-| `DOCKER_USER` | Build only | Your Docker Hub username |
-| `VERSION` | Build only | Image tag (default: `1.3.0-custom`) |
+| `DOCKER_USER` | Build only | Your Docker Hub username (used in docker-compose.build.yaml) |
+| `VERSION` | Build only | Image tag (default: `1.0.0`) |
 | `RETAIL_UI_THEME` | No | UI color theme (`default`, `orange`, `blue`, `green`, `teal`) |
 
 ---
@@ -177,28 +140,7 @@ Apply the manifests to your cluster:
 kubectl apply -f kubernetes.yaml
 ```
 
-To use your custom images, replace the ECR Public image references in `kubernetes.yaml` with your Docker Hub images before applying.
-
----
-
-## Migrate to Amazon ECR
-
-After pushing to Docker Hub, you can re-tag and push to ECR:
-
-```bash
-aws configure
-
-# Authenticate Docker with ECR
-aws ecr get-login-password --region us-east-1 \
-  | docker login --username AWS --password-stdin \
-    123456789.dkr.ecr.us-east-1.amazonaws.com
-
-# Tag and push
-docker tag your_user/retail-store-ui:1.3.0-custom \
-  123456789.dkr.ecr.us-east-1.amazonaws.com/retail-store-ui:1.3.0-custom
-
-docker push 123456789.dkr.ecr.us-east-1.amazonaws.com/retail-store-ui:1.3.0-custom
-```
+To use your custom images, replace the image references in `kubernetes.yaml` with your ECR URIs before applying.
 
 ---
 
