@@ -1,6 +1,6 @@
-# Retail Store Sample App — Custom Build v1.0.0
+# Retail Store App v1.0.0
 
-A customized build of the [AWS Containers Retail Store Sample App](https://github.com/aws-containers/retail-store-sample-app) (v1.0.0), containerized as independent microservices and ready to deploy with Docker Compose or Kubernetes.
+Retail store application containerized as independent microservices, ready to deploy with Docker Compose or Kubernetes.
 
 ---
 
@@ -275,7 +275,6 @@ npm install && npm run build
 
 ## References
 
-- [Upstream project — aws-containers/retail-store-sample-app](https://github.com/aws-containers/retail-store-sample-app)
 - [Docker Hub](https://hub.docker.com)
 - [Amazon ECR](https://aws.amazon.com/ecr/)
 - [Amazon ECR Public Gallery](https://gallery.ecr.aws/aws-containers)
@@ -284,5 +283,4 @@ npm install && npm run build
 
 ## License
 
-Based on the [AWS Containers Retail Store Sample App](https://github.com/aws-containers/retail-store-sample-app), licensed under MIT.
-Custom modifications are your own.
+MIT License.
