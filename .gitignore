@@ -38,3 +38,9 @@ vendor/
 
 # Build logs
 /tmp/build-*.log
+
+# Terraform state (ignore local state files)
+infra/bootstrap/terraform.tfstate
+infra/bootstrap/terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
