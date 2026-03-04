@@ -68,11 +68,11 @@ GALLERY=$(aws ecr-public describe-registries --region us-east-1 \
 VERSION="1.0.0"
 DOCKER_USER="gheinz"
 
-docker tag $DOCKER_USER/retail-store-ui:$VERSION        $GALLERY/retail-store-ui:$VERSION
-docker tag $DOCKER_USER/retail-store-catalog:$VERSION   $GALLERY/retail-store-catalog:$VERSION
-docker tag $DOCKER_USER/retail-store-cart:$VERSION      $GALLERY/retail-store-cart:$VERSION
-docker tag $DOCKER_USER/retail-store-checkout:$VERSION  $GALLERY/retail-store-checkout:$VERSION
-docker tag $DOCKER_USER/retail-store-orders:$VERSION    $GALLERY/retail-store-orders:$VERSION
+docker tag $DOCKER_USER/retail-ui-multiarch:$VERSION        $GALLERY/retail-store-ui:$VERSION
+docker tag $DOCKER_USER/retail-catalog-multiarch:$VERSION   $GALLERY/retail-store-catalog:$VERSION
+docker tag $DOCKER_USER/retail-cart-multiarch:$VERSION      $GALLERY/retail-store-cart:$VERSION
+docker tag $DOCKER_USER/retail-checkout-multiarch:$VERSION  $GALLERY/retail-store-checkout:$VERSION
+docker tag $DOCKER_USER/retail-orders-multiarch:$VERSION    $GALLERY/retail-store-orders:$VERSION
 ```
 
 Verify tags:
