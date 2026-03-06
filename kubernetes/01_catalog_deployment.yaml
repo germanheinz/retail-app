@@ -1,5 +1,4 @@
-#! NOTE Deployment is used here for demonstration purposes.
-#! Deployment defines the desired state for Pods and ReplicaSets; supports rolling updates.
+# ? NOTE Deployment defines the desired state for Pods and ReplicaSets; supports rolling updates.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,7 +15,7 @@ spec:
       maxUnavailable: 1
     type: RollingUpdate
   selector: 
-    matchLabels: #! IMPORTANT: These labels must exactly match the Service selector (ClusterIP) or the Headless Service used by a StatefulSet to route traffic correctly.
+    matchLabels: # ? IMPORTANT: These labels must exactly match the Service selector (ClusterIP) or the Headless Service used by a StatefulSet to route traffic correctly.
       app.kubernetes.io/name: catalog
       app.kubernetes.io/instance: catalog
       app.kubernetes.io/component: service
@@ -47,13 +46,13 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 8080  #! Container port exposed by Pod; Services should target this port (or the Service's targetPort).
+              containerPort: 8080  # ? Container port exposed by Pod; Services should target this port (or the Service's targetPort).
               protocol: TCP
-          readinessProbe: #! Readiness probe: when ready=true Pod receives traffic from Services
+          readinessProbe: # ? Readiness probe: when ready=true Pod receives traffic from Services
             httpGet:
               path: /health
               port: 8080
-          livenessProbe: #! Liveness probe: restarts container if unhealthy
+          livenessProbe: # ? Liveness probe: restarts container if unhealthy
             httpGet:
               path: /health
               port: 8080                 

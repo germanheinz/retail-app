@@ -1,3 +1,5 @@
+# ? ClusterIP is the default Service type — only accessible within the cluster (no external traffic).
+# ? The selector must match exactly the labels defined in the Deployment's pod template.
 apiVersion: v1
 kind: Service
 metadata:

@@ -1,3 +1,8 @@
+#! IMPORTANT: emptyDir is used for storage — all data is LOST when the Pod restarts.
+#! IMPORTANT: Use a PersistentVolumeClaim (PVC) instead of emptyDir for any real data.
+#! IMPORTANT: MySQL credentials are hardcoded — use Kubernetes Secrets in production.
+# ? StatefulSet gives each Pod a stable identity and ordered deployment/scaling.
+# ? Used here for MySQL because it requires a predictable hostname for the headless service DNS.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -9,12 +14,12 @@ metadata:
     app.kubernetes.io/owner: retail-store-sample
 spec:
   replicas: 1
-  serviceName: catalog-mysql
+  serviceName: catalog-mysql # ? MATCH (1): must equal metadata.name of the Headless Service (05_catalog_mysql_headless_service.yaml)
   selector:
     matchLabels:
-      app.kubernetes.io/name: catalog
-      app.kubernetes.io/instance: catalog
-      app.kubernetes.io/component: mysql
+      app.kubernetes.io/name: catalog      # ? MATCH (2): these labels must match the selector in the Headless Service
+      app.kubernetes.io/instance: catalog  # ? MATCH (2): so the Service knows which Pods belong to this StatefulSet
+      app.kubernetes.io/component: mysql   # ? MATCH (2): and can generate their stable DNS entries
       app.kubernetes.io/owner: retail-store-sample
   template:
     metadata:

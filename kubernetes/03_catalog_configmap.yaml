@@ -1,3 +1,7 @@
+#! IMPORTANT: Plain-text credentials here are for demo/study only. Use Secrets in production.
+# ? ConfigMap stores non-sensitive config as key-value pairs injected as env vars via envFrom.
+# ? NOTE The endpoint uses the StatefulSet Pod DNS format for the headless service:
+# ? <pod-name>.<headless-svc-name>.<namespace>.svc.cluster.local:<port>
 apiVersion: v1
 kind: ConfigMap
 metadata:
