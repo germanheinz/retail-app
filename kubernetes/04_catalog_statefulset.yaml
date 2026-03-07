@@ -51,17 +51,27 @@ spec:
               echo "Loaded secrets from AWS Secrets Manager. Starting MySQL with user=$MYSQL_USER";
               exec docker-entrypoint.sh mysqld          
           volumeMounts: # volumeMounts make them available to the container at the specified path; the AWS Secrets Store CSI driver mounts secrets as files in /mnt/secrets-store, which are then read and set as environment variables for MySQL.
-            - name: data
+            - name: data-ebs
               mountPath: /var/lib/mysql
             - name: aws-secrets
               mountPath: /mnt/secrets-store
               readOnly: true              
       volumes: # ? Volumes for MySQL data and AWS Secrets Store CSI driver, bringing secrets from AWS Secrets Manager into the Pod as files.
-        - name: data
-          emptyDir: {}
+        #- name: data
+        #  emptyDir: {}
         - name: aws-secrets
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: "catalog-db-secrets"          
+# Added for provisioning EBS Volumes              
+  volumeClaimTemplates:
+    - metadata:
+        name: data-ebs
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: ebs-sc    
