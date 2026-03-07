@@ -54,15 +54,15 @@ aws --version   # optional
 | `checkout` | Node.js NestJS | 8080 | Checkout flow API + Redis |
 | `orders` | Java Spring Boot | 8080 | Order management API + PostgreSQL + RabbitMQ |
 
-## Public Images (ECR Public)
+## Public Images & Helm Charts (ECR Public)
 
-| Service | Image URI |
-|---------|-----------|
-| `ui` | `public.ecr.aws/i5b4r2o0/retail-store-ui:1.0.0` |
-| `catalog` | `public.ecr.aws/i5b4r2o0/retail-store-catalog:1.0.0` |
-| `cart` | `public.ecr.aws/i5b4r2o0/retail-store-cart:1.0.0` |
-| `checkout` | `public.ecr.aws/i5b4r2o0/retail-store-checkout:1.0.0` |
-| `orders` | `public.ecr.aws/i5b4r2o0/retail-store-orders:1.0.0` |
+| Service | Image URI | Helm Chart URI |
+|---------|-----------|----------------|
+| `ui` | `public.ecr.aws/i5b4r2o0/retail-store-ui:1.0.0` | `oci://public.ecr.aws/i5b4r2o0/retail-store-ui-chart:1.0.1` |
+| `catalog` | `public.ecr.aws/i5b4r2o0/retail-store-catalog:1.0.0` | `oci://public.ecr.aws/i5b4r2o0/retail-store-catalog-chart:1.0.1` |
+| `cart` | `public.ecr.aws/i5b4r2o0/retail-store-cart:1.0.0` | `oci://public.ecr.aws/i5b4r2o0/retail-store-cart-chart:1.0.1` |
+| `checkout` | `public.ecr.aws/i5b4r2o0/retail-store-checkout:1.0.0` | `oci://public.ecr.aws/i5b4r2o0/retail-store-checkout-chart:1.0.1` |
+| `orders` | `public.ecr.aws/i5b4r2o0/retail-store-orders:1.0.0` | `oci://public.ecr.aws/i5b4r2o0/retail-store-orders-chart:1.0.1` |
 
 ---
 
