@@ -14,12 +14,12 @@ metadata:
     app.kubernetes.io/owner: retail-store-sample
 spec:
   replicas: 1
-  serviceName: catalog-mysql # ? MATCH (1): must equal metadata.name of the Headless Service (05_catalog_mysql_headless_service.yaml)
+  serviceName: catalog-mysql
   selector:
     matchLabels:
-      app.kubernetes.io/name: catalog      # ? MATCH (2): these labels must match the selector in the Headless Service
-      app.kubernetes.io/instance: catalog  # ? MATCH (2): so the Service knows which Pods belong to this StatefulSet
-      app.kubernetes.io/component: mysql   # ? MATCH (2): and can generate their stable DNS entries
+      app.kubernetes.io/name: catalog
+      app.kubernetes.io/instance: catalog
+      app.kubernetes.io/component: mysql
       app.kubernetes.io/owner: retail-store-sample
   template:
     metadata:
@@ -29,32 +29,39 @@ spec:
         app.kubernetes.io/component: mysql
         app.kubernetes.io/owner: retail-store-sample
     spec:
+      serviceAccount: catalog-mysql-sa # Service Account    
       containers:
         - name: mysql
           image: "mysql:8.0"
           imagePullPolicy: IfNotPresent
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP          
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: my-secret-pw
             - name: MYSQL_DATABASE
               value: catalogdb
-            - name: MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: catalog-db
-                  key: RETAIL_CATALOG_PERSISTENCE_USER
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: catalog-db
-                  key: RETAIL_CATALOG_PERSISTENCE_PASSWORD
-          ports:
-            - name: mysql
-              containerPort: 3306
-              protocol: TCP
-          volumeMounts:
+          command: ["/bin/bash", "-c"]
+          args: # security best practice: avoid hardcoding secrets in env vars; instead, read them from files mounted by the AWS Secrets Store CSI driver and set them as env vars for MySQL at runtime.
+            - |
+              export MYSQL_USER=$(cat /mnt/secrets-store/MYSQL_USER);
+              export MYSQL_PASSWORD=$(cat /mnt/secrets-store/MYSQL_PASSWORD);
+              echo "Loaded secrets from AWS Secrets Manager. Starting MySQL with user=$MYSQL_USER";
+              exec docker-entrypoint.sh mysqld          
+          volumeMounts: # volumeMounts make them available to the container at the specified path; the AWS Secrets Store CSI driver mounts secrets as files in /mnt/secrets-store, which are then read and set as environment variables for MySQL.
             - name: data
               mountPath: /var/lib/mysql
-      volumes:
+            - name: aws-secrets
+              mountPath: /mnt/secrets-store
+              readOnly: true              
+      volumes: # ? Volumes for MySQL data and AWS Secrets Store CSI driver, bringing secrets from AWS Secrets Manager into the Pod as files.
         - name: data
           emptyDir: {}
+        - name: aws-secrets
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "catalog-db-secrets"          
