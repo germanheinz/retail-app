@@ -42,12 +42,18 @@ spec:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
-          image: "public.ecr.aws/aws-containers/retail-store-sample-catalog:1.3.0"
+          image: "public.ecr.aws/i5b4r2o0/retail-store-catalog:1.0.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080  # ? Container port exposed by Pod; Services should target this port (or the Service's targetPort).
               protocol: TCP
+          startupProbe: # ? Startup probe: waits for the app to be ready before other probes start (gives MySQL time to initialize)
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 30
+            periodSeconds: 10
           readinessProbe: # ? Readiness probe: when ready=true Pod receives traffic from Services
             httpGet:
               path: /health
