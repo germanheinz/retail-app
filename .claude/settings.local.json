@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"README.md\" \"01_catalog_deployment.md\")",
+      "Bash(mv \"README copy.md\" \"02_catalog_clusterip_service.md\")",
+      "Bash(mv \"README copy 2.md\" \"03_catalog_configmap.md\")",
+      "Bash(mv \"README copy 3.md\" \"04_05_catalog_statefulset_headless.md\")"
+    ]
+  }
+}
