@@ -23,6 +23,7 @@ RUN for attempt in 1 2 3; do mvn dependency:go-offline -B -q && break || { [ "$a
 
 COPY ./src ./src
 
+RUN chmod +x mvnw
 RUN ./mvnw -DskipTests package -q && \
     mv /target/ui-0.0.1-SNAPSHOT.jar /app.jar
 
