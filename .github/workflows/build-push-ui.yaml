@@ -64,9 +64,9 @@ jobs:
           cd src/ui
           git config user.name "ci-bot"
           git config user.email "ci-bot@stacksimplify.com"
-          sed -i "s|^  tag: .*|  tag: sha-${GITHUB_SHA::7}|" chart/values-ui.yaml
+          sed -i "s|^  tag: .*|  tag: sha-${GITHUB_SHA::7}|" chart/values.yaml
           git diff --quiet || (
-            git add chart/values-ui.yaml
+            git add chart/values.yaml
             git commit -m "Update UI image tag to sha-${GITHUB_SHA::7}"
             git push origin main
           )
