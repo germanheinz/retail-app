@@ -9,7 +9,7 @@
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:https://github.com/germanheinz/retail-app:*"
+          "token.actions.githubusercontent.com:sub": "repo:germanheinz/retail-app:*"
         }
       }
     }
