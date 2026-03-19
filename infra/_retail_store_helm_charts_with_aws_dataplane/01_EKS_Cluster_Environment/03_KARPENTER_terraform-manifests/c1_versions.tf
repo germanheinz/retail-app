@@ -22,7 +22,7 @@ terraform {
 
   # Remote backend configuration using S3 
   backend "s3" {
-    bucket         = "tfstate-dev-us-east-1-10dhyv"         
+    bucket         = "tfstate-dev-us-east-1-s0kdc8"         
     key            = "karpenter/dev/terraform.tfstate"            
     region         = "us-east-1"                            
     encrypt        = true                                   

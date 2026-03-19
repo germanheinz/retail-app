@@ -1,0 +1,3 @@
+sed -i 's/\r$//' create-cluster-with-karpenter.sh
+
+sed -i 's/\r$//' destroy-cluster-with-karpenter.sh

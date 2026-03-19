@@ -40,7 +40,17 @@ vendor/
 /tmp/build-*.log
 
 # Terraform state (ignore local state files)
+**/.terraform/*
 infra/bootstrap/terraform.tfstate
 infra/bootstrap/terraform.tfstate.backup
 *.tfstate
 *.tfstate.backup
+
+# Helm packaged charts
+*.tgz
+
+dist/
+build/
+*.zip
+*.tar
+*.tar.gz
